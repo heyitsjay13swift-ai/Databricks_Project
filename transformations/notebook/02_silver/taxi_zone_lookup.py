@@ -1,25 +1,25 @@
 # Databricks notebook source
 from datetime import datetime
 from delta.tables import DeltaTable
-from pyspark.sql.functions import lit, col, current_timestamp
+from pyspark.sql.functions import lit, current_timestamp, col
 from pyspark.sql.types import TimestampType, IntegerType, StringType
 
 # COMMAND ----------
 
 # Read the taxi zone lookup CSV (with header) into a DataFrame
-df = spark.read.format("csv").option('header',True).load("/Volumes/nyc_taxi/00_landing/data_sources/lookup/taxi_zone_lookup.csv")
+df = spark.read.format("csv").option("header", True).load("/Volumes/nyc_taxi/00_landing/data_sources/lookup/taxi_zone_lookup.csv")
 
 # COMMAND ----------
 
 # Select and rename fields, casting types, and add audit columns
 df = df.select(
-    col("LocationID").cast(IntegerType()).alias("location_id"),
-    col("Borough").alias("borough"),
-    col("Zone").alias("zone"),
-    col("service_zone"),
-    current_timestamp().alias("effective_date"),
-    lit(None).cast(TimestampType()).alias("end_date") #stores null value for now
-)
+                col("LocationID").cast(IntegerType()).alias("location_id"),
+                col("Borough").alias("borough"),
+                col("Zone").alias("zone"),
+                col("service_zone"),
+                current_timestamp().alias("effective_date"),
+                lit(None).cast(TimestampType()).alias("end_date")
+            )
 
 # COMMAND ----------
 
@@ -29,8 +29,6 @@ end_timestamp = datetime.now()
 
 # Load the SCD2 Delta table
 dt = DeltaTable.forName(spark, "nyc_taxi.02_silver.taxi_zone_lookup")
-
-# COMMAND ----------
 
 # COMMAND ----------
 
@@ -49,8 +47,6 @@ dt.alias("t").\
         set = { "t.end_date": lit(end_timestamp).cast(TimestampType()) }
     ).\
     execute()
-
-# COMMAND ----------
 
 # COMMAND ----------
 
@@ -84,9 +80,6 @@ else:
         ).\
         execute()
 
-
-# COMMAND ----------
-
 # COMMAND ----------
 
 # -----------------------------
@@ -106,10 +99,3 @@ dt.alias("t").\
                 "t.end_date": lit(None).cast(TimestampType()) }
     ).\
     execute()
-
-# COMMAND ----------
-
-
-
-# COMMAND ----------
-
