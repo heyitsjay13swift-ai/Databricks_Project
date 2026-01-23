@@ -52,7 +52,7 @@ df_join_1 = df_trips.join(
                     df_trips.improvement_surcharge,
                     df_trips.total_amount,
                     df_trips.congestion_surcharge,
-                    df_trips.airport_fee,  
+                    df_trips.Airport_fee,  
                     df_trips.cbd_congestion_fee,
                     df_trips.processed_timestamp
                 )
@@ -84,7 +84,7 @@ df_join_final = df_join_1.join(
                                             df_join_1.improvement_surcharge,
                                             df_join_1.total_amount,
                                             df_join_1.congestion_surcharge,
-                                            df_join_1.airport_fee,  
+                                            df_join_1.Airport_fee.alias("airport_fee"),  
                                             df_join_1.cbd_congestion_fee,
                                             df_join_1.processed_timestamp
                                 )
