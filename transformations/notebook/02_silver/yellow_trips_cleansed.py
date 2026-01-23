@@ -89,4 +89,4 @@ df = df.select(
 # COMMAND ----------
 
 # Write cleansed data to a Unity Catalog managed Delta table in the silver schema
-df.write.mode("append").saveAsTable("nyc_taxi.02_silver.yellow_trips_cleansed")
+df.write.mode("append").option("mergeSchema", "true").saveAsTable("nyc_taxi.02_silver.yellow_trips_cleansed")
