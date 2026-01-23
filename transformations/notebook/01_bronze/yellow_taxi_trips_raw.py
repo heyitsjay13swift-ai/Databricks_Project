@@ -29,4 +29,4 @@ df = add_processed_timestamp(df)
 # COMMAND ----------
 
 # Write the DataFrame to a Unity Catalog managed Delta table in the bronze schema, appending the new data
-df.write.mode("append").saveAsTable("nyctaxi.01_bronze.yellow_trips_raw")
+df.write.mode("append").saveAsTable("nyc_taxi.01_bronze.yellow_trips_raw")
